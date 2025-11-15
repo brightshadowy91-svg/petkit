@@ -1,6 +1,8 @@
 import discord
 from discord import app_commands
 from discord.ext import tasks
+from flask import Flask
+from threading import Thread
 import os
 import logging
 import asyncpg
@@ -11,6 +13,23 @@ from dotenv import load_dotenv
 from typing import Optional, List, Dict, Any
 from datetime import datetime, date, time, timezone, timedelta # CRITICAL FIX 1: Imported timedelta
 from collections import Counter
+
+# --- START OF REPLIT 24-7 H.A.C.K ---
+from flask import Flask
+from threading import Thread
+
+app = Flask('')
+
+@app.route('/')
+def home():
+    return "PetQuest bot is alive!"
+
+def run_web_server():
+    app.run(host='0.0.0.0', port=8080)
+
+def start_web_server_thread():
+    t = Thread(target=run_web_server)
+    t.start()
 
 # --- Configuration & Logging ---
 load_dotenv()
@@ -1137,6 +1156,9 @@ if __name__ == "__main__":
     async def main():
         async with client:
             await client.start(TOKEN)
+
+    # Start the web server in a separate thread
+    start_web_server_thread()
     
     try:
         asyncio.run(main())
